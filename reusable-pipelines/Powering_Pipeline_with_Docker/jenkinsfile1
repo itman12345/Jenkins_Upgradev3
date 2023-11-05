@@ -1,6 +1,7 @@
 pipeline {
     agent {
         docker {
+             label 'maven-agent'
             image 'maven:latest'
             args '-u root'
         }
