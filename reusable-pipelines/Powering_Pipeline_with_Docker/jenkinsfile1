@@ -1,16 +1,14 @@
 pipeline {
-    agent {
-        docker {
-             label 'maven-agent'
-            image 'maven:latest'
-            args '-u root'
-        }
-    }
-    
+    agent none
+
     environment {
-      VERSION = '0.1.0'
-      RELEASE_VERSION = 'R.2'
+        VERSION = '0.1.0'
+        RELEASE_VERSION = 'R.2'
     }
+
+    // Define the Docker image and arguments for all stages
+    def dockerImage = 'maven:latest'
+    def dockerArgs = '-u root'
 
     stages {
       stage('Audit tools') {
