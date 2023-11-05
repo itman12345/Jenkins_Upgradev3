@@ -1,19 +1,19 @@
 pipeline {
-    agent none
-
+    agent {
+        docker {
+            image 'maven:latest'
+            args '-u root'
+        }
+    }
+    
     environment {
-        VERSION = '0.1.0'
-        RELEASE_VERSION = 'R.2'
+      VERSION = '0.1.0'
+      RELEASE_VERSION = 'R.2'
     }
 
     stages {
       stage('Audit tools') {
         steps {
-             script {
-                    def dockerImage = 'maven:latest'
-                    def dockerArgs = '-u root'
-
-                    docker.image(dockerImage).inside(dockerArgs) {
           sh '''
               java -version
               mvn -version
@@ -22,16 +22,9 @@ pipeline {
           sh 'ls -l $WORKSPACE'
         }
       }
-}
-}
 
       stage('Unit Test') {
         steps {
-              script {
-                    def dockerImage = 'maven:latest'
-                    def dockerArgs = '-u root'
-
-                    docker.image(dockerImage).inside(dockerArgs) {
           dir('./java-tomcat-sample') {
             sh '''
               echo "Executing Unit Tests..."
@@ -40,24 +33,15 @@ pipeline {
           }
         }
       }
-}
-}
 
       stage('Build') {
         steps {
-            script {
-                    def dockerImage = 'maven:latest'
-                    def dockerArgs = '-u root'
-
-                    docker.image(dockerImage).inside(dockerArgs) {
           echo "Building version: ${VERSION} with suffix: ${RELEASE_VERSION}"
           echo 'Mention your Application Build Code here!!!'
           sh 'mvn -f java-tomcat-sample/pom.xml clean package'
         }
       }
     }
-}
-}
 }
 
 
