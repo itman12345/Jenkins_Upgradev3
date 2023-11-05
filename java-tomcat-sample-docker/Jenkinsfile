@@ -1,5 +1,8 @@
 pipeline {
-    agent maven-agent
+    agent {
+    label 'maven-agent'
+}
+
     stages {
         stage('Build Application') {
             steps {
